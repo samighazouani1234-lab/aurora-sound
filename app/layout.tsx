@@ -1,3 +1,10 @@
+import "./globals.css";
+
+export const metadata = {
+  title: "Aurora Sound",
+  description: "Générateur de musique IA",
+};
+
 export default function RootLayout({
   children,
 }: {
@@ -5,7 +12,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="fr">
-      <body>{children}</body>
+      <body className="bg-black text-white">
+        {children}
+      </body>
     </html>
   );
 }
