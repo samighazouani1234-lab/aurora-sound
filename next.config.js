@@ -1,1 +1,4 @@
-export default function Library(){return <main className="min-h-screen p-8"><h1 className="text-4xl font-semibold">Bibliothèque</h1><p className="mt-4 text-white/60">Tes générations sauvegardées apparaîtront ici.</p></main>}
+/** @type {import('next').NextConfig} */
+const nextConfig = {};
+
+module.exports = nextConfig;
