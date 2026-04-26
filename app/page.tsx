@@ -3,30 +3,65 @@
 import { useState } from "react";
 
 export default function Home() {
+  const [prompt, setPrompt] = useState("");
   const [generated, setGenerated] = useState(false);
+  const [audioUrl, setAudioUrl] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const generateMusic = async () => {
+    setLoading(true);
+    setGenerated(false);
+
+    try {
+      const res = await fetch("/api/generate", {
+        method: "POST",
+        body: JSON.stringify({ prompt }),
+      });
+
+      const data = await res.json();
+      console.log(data);
+
+      // ⚠️ temporaire (on fera mieux après)
+      if (data.urls?.get) {
+        setAudioUrl(data.urls.get);
+        setGenerated(true);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+
+    setLoading(false);
+  };
 
   return (
     <main style={styles.page}>
+      {/* HEADER */}
       <header style={styles.header}>
         <div style={styles.logo}>🎵 Aurora Sound</div>
         <a style={styles.proButton}>Passer Pro</a>
       </header>
 
+      {/* HERO */}
       <section style={styles.hero}>
         <div>
           <p style={styles.badge}>AI Music Generator</p>
-          <h1 style={styles.title}>Crée une musique IA prête à publier.</h1>
+          <h1 style={styles.title}>
+            Crée une musique IA prête à publier.
+          </h1>
           <p style={styles.subtitle}>
             Génère des sons, beats et chansons en quelques clics avec une interface premium.
           </p>
         </div>
 
+        {/* CARD */}
         <div style={styles.card}>
           <h2 style={styles.cardTitle}>Générateur</h2>
 
           <textarea
             placeholder="Ex : musique rap sombre avec piano triste et ambiance nocturne"
             style={styles.textarea}
+            value={prompt}
+            onChange={(e) => setPrompt(e.target.value)}
           />
 
           <div style={styles.grid}>
@@ -45,34 +80,48 @@ export default function Home() {
             </select>
           </div>
 
-          <button style={styles.generate} onClick={() => setGenerated(true)}>
-            ✨ Générer la musique
+          <button style={styles.generate} onClick={generateMusic}>
+            {loading ? "⏳ Génération..." : "✨ Générer la musique"}
           </button>
 
-          {generated && (
+          {/* RESULT */}
+          {generated && audioUrl && (
             <div style={styles.result}>
               <h3>🎧 Résultat généré</h3>
-              <div style={styles.player}>▶ Aurora Track</div>
+
+              <div style={styles.player}>
+                ▶ Lecture audio
+              </div>
+
               <audio controls style={{ width: "100%" }}>
-                <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" />
+                <source src={audioUrl} />
               </audio>
+
               <div style={styles.actions}>
-                <button style={styles.actionButton}>Télécharger</button>
-                <button style={styles.actionButtonDark}>Regénérer</button>
+                <button style={styles.actionButton}>
+                  Télécharger
+                </button>
+                <button style={styles.actionButtonDark}>
+                  Regénérer
+                </button>
               </div>
             </div>
           )}
         </div>
       </section>
 
+      {/* LIBRARY */}
       <section style={styles.library}>
         <h2>Mes créations</h2>
-        {["Midnight Vision", "Golden Summer", "Velvet Dreams"].map((t) => (
-          <div key={t} style={styles.track}>
-            <span>▶ {t}</span>
-            <span style={{ opacity: 0.6 }}>MP3</span>
-          </div>
-        ))}
+
+        {["Midnight Vision", "Golden Summer", "Velvet Dreams"].map(
+          (t) => (
+            <div key={t} style={styles.track}>
+              <span>▶ {t}</span>
+              <span style={{ opacity: 0.6 }}>MP3</span>
+            </div>
+          )
+        )}
       </section>
     </main>
   );
