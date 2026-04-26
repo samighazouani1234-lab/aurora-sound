@@ -1,0 +1,6 @@
+'use client'
+import { useState } from 'react'
+import { supabase } from '@/lib/supabase'
+import { useRouter } from 'next/navigation'
+import Link from 'next/link'
+export default function Login(){const[email,setEmail]=useState('');const[password,setPassword]=useState('');const[msg,setMsg]=useState('');const r=useRouter();async function submit(e:any){e.preventDefault();setMsg('Connexion...');const{error}=await supabase.auth.signInWithPassword({email,password});if(error)return setMsg(error.message);r.push('/dashboard')}return <main className="grid min-h-screen place-items-center px-6"><form onSubmit={submit} className="w-full max-w-md rounded-3xl border border-white/10 bg-white/5 p-8"><h1 className="text-3xl font-semibold">Connexion</h1><input className="mt-6 w-full rounded-xl bg-black/40 p-3" placeholder="Email" value={email} onChange={e=>setEmail(e.target.value)}/><input className="mt-3 w-full rounded-xl bg-black/40 p-3" type="password" placeholder="Mot de passe" value={password} onChange={e=>setPassword(e.target.value)}/><button className="mt-5 w-full rounded-xl bg-white p-3 text-black">Se connecter</button><p className="mt-4 text-sm text-white/60">{msg}</p><Link className="mt-4 block text-sm text-white/60" href="/register">Créer un compte</Link></form></main>}
