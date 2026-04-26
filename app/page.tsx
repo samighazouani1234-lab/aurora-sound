@@ -1,84 +1,221 @@
 "use client";
 
 import { useState } from "react";
-import { Wand2, Play } from "lucide-react";
 
 export default function Home() {
-  const [prompt, setPrompt] = useState("");
   const [generated, setGenerated] = useState(false);
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-black to-gray-900 text-white flex flex-col items-center justify-center px-6">
+    <main style={styles.page}>
+      <header style={styles.header}>
+        <div style={styles.logo}>🎵 Aurora Sound</div>
+        <a style={styles.proButton}>Passer Pro</a>
+      </header>
 
-      {/* HEADER */}
-      <h1 className="text-5xl font-bold mb-4">
-        Aurora Sound 🚀
-      </h1>
-
-      <p className="text-gray-400 mb-10 text-center max-w-xl">
-        Crée de la musique IA en quelques secondes. Style Musicful, simple, rapide, puissant.
-      </p>
-
-      {/* INPUT */}
-      <div className="w-full max-w-xl flex flex-col gap-4">
-
-        <textarea
-          value={prompt}
-          onChange={(e) => setPrompt(e.target.value)}
-          placeholder="Ex: musique rap sombre piano triste ambiance nuit"
-          className="p-4 rounded-xl bg-gray-800 border border-gray-700 focus:outline-none"
-        />
-
-        {/* OPTIONS */}
-        <div className="flex gap-3">
-          <select className="flex-1 p-3 rounded-lg bg-gray-800">
-            <option>Rap</option>
-            <option>Pop</option>
-            <option>Électro</option>
-            <option>Classique</option>
-          </select>
-
-          <select className="flex-1 p-3 rounded-lg bg-gray-800">
-            <option>30 sec</option>
-            <option>1 min</option>
-            <option>2 min</option>
-          </select>
+      <section style={styles.hero}>
+        <div>
+          <p style={styles.badge}>AI Music Generator</p>
+          <h1 style={styles.title}>Crée une musique IA prête à publier.</h1>
+          <p style={styles.subtitle}>
+            Génère des sons, beats et chansons en quelques clics avec une interface premium.
+          </p>
         </div>
 
-        {/* BUTTON */}
-        <button
-          onClick={() => setGenerated(true)}
-          className="bg-white text-black font-bold py-4 rounded-xl flex items-center justify-center gap-2 hover:scale-105 transition"
-        >
-          <Wand2 size={18} />
-          Générer la musique
-        </button>
-      </div>
+        <div style={styles.card}>
+          <h2 style={styles.cardTitle}>Générateur</h2>
 
-      {/* RESULT */}
-      {generated && (
-        <div className="mt-10 w-full max-w-xl bg-gray-800 p-6 rounded-xl">
+          <textarea
+            placeholder="Ex : musique rap sombre avec piano triste et ambiance nocturne"
+            style={styles.textarea}
+          />
 
-          <h2 className="mb-4 text-lg font-semibold">
-            🎧 Résultat
-          </h2>
+          <div style={styles.grid}>
+            <select style={styles.input}>
+              <option>Rap</option>
+              <option>Pop</option>
+              <option>Afrobeat</option>
+              <option>Lo-fi</option>
+              <option>House</option>
+            </select>
 
-          <div className="h-40 bg-black rounded-lg flex items-center justify-center">
-            <Play size={40} />
+            <select style={styles.input}>
+              <option>30 sec</option>
+              <option>1 min</option>
+              <option>2 min</option>
+            </select>
           </div>
 
-          <div className="flex gap-3 mt-4">
-            <button className="bg-white text-black px-4 py-2 rounded-lg">
-              Télécharger
-            </button>
-            <button className="border border-white px-4 py-2 rounded-lg">
-              Regénérer
-            </button>
-          </div>
+          <button style={styles.generate} onClick={() => setGenerated(true)}>
+            ✨ Générer la musique
+          </button>
 
+          {generated && (
+            <div style={styles.result}>
+              <h3>🎧 Résultat généré</h3>
+              <div style={styles.player}>▶ Aurora Track</div>
+              <audio controls style={{ width: "100%" }}>
+                <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" />
+              </audio>
+              <div style={styles.actions}>
+                <button style={styles.actionButton}>Télécharger</button>
+                <button style={styles.actionButtonDark}>Regénérer</button>
+              </div>
+            </div>
+          )}
         </div>
-      )}
+      </section>
 
+      <section style={styles.library}>
+        <h2>Mes créations</h2>
+        {["Midnight Vision", "Golden Summer", "Velvet Dreams"].map((t) => (
+          <div key={t} style={styles.track}>
+            <span>▶ {t}</span>
+            <span style={{ opacity: 0.6 }}>MP3</span>
+          </div>
+        ))}
+      </section>
     </main>
   );
 }
+
+const styles: Record<string, React.CSSProperties> = {
+  page: {
+    minHeight: "100vh",
+    background:
+      "radial-gradient(circle at top left, #7c3aed55, transparent 30%), radial-gradient(circle at top right, #06b6d455, transparent 25%), #070812",
+    color: "white",
+    fontFamily: "Arial, sans-serif",
+    padding: 24,
+  },
+  header: {
+    maxWidth: 1200,
+    margin: "0 auto",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: "20px 0",
+  },
+  logo: { fontSize: 24, fontWeight: 900 },
+  proButton: {
+    background: "white",
+    color: "black",
+    padding: "12px 18px",
+    borderRadius: 999,
+    fontWeight: 800,
+  },
+  hero: {
+    maxWidth: 1200,
+    margin: "60px auto",
+    display: "grid",
+    gridTemplateColumns: "1fr 1fr",
+    gap: 40,
+    alignItems: "center",
+  },
+  badge: {
+    display: "inline-block",
+    padding: "8px 14px",
+    borderRadius: 999,
+    background: "rgba(255,255,255,0.1)",
+    color: "#cbd5e1",
+  },
+  title: {
+    fontSize: 64,
+    lineHeight: 1,
+    margin: "24px 0",
+    letterSpacing: -3,
+  },
+  subtitle: {
+    fontSize: 18,
+    color: "#cbd5e1",
+    lineHeight: 1.7,
+  },
+  card: {
+    background: "rgba(255,255,255,0.08)",
+    border: "1px solid rgba(255,255,255,0.14)",
+    borderRadius: 32,
+    padding: 28,
+    boxShadow: "0 30px 80px rgba(0,0,0,0.45)",
+  },
+  cardTitle: { fontSize: 28, marginBottom: 20 },
+  textarea: {
+    width: "100%",
+    minHeight: 130,
+    borderRadius: 22,
+    border: "1px solid rgba(255,255,255,0.15)",
+    background: "rgba(0,0,0,0.35)",
+    color: "white",
+    padding: 18,
+    fontSize: 16,
+    boxSizing: "border-box",
+  },
+  grid: {
+    display: "grid",
+    gridTemplateColumns: "1fr 1fr",
+    gap: 12,
+    marginTop: 14,
+  },
+  input: {
+    padding: 14,
+    borderRadius: 16,
+    background: "rgba(0,0,0,0.35)",
+    color: "white",
+    border: "1px solid rgba(255,255,255,0.15)",
+  },
+  generate: {
+    marginTop: 18,
+    width: "100%",
+    padding: 16,
+    borderRadius: 999,
+    border: 0,
+    background: "white",
+    color: "black",
+    fontWeight: 900,
+    fontSize: 16,
+    cursor: "pointer",
+  },
+  result: {
+    marginTop: 20,
+    background: "rgba(0,0,0,0.35)",
+    padding: 18,
+    borderRadius: 24,
+  },
+  player: {
+    height: 90,
+    borderRadius: 18,
+    background: "linear-gradient(90deg,#111827,#312e81,#111827)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 14,
+    fontWeight: 800,
+  },
+  actions: { display: "flex", gap: 10, marginTop: 14 },
+  actionButton: {
+    flex: 1,
+    padding: 12,
+    borderRadius: 999,
+    border: 0,
+    fontWeight: 800,
+  },
+  actionButtonDark: {
+    flex: 1,
+    padding: 12,
+    borderRadius: 999,
+    border: "1px solid rgba(255,255,255,0.2)",
+    background: "transparent",
+    color: "white",
+    fontWeight: 800,
+  },
+  library: {
+    maxWidth: 1200,
+    margin: "0 auto 60px",
+  },
+  track: {
+    marginTop: 12,
+    padding: 18,
+    borderRadius: 22,
+    background: "rgba(255,255,255,0.07)",
+    display: "flex",
+    justifyContent: "space-between",
+  },
+};
